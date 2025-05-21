@@ -8,9 +8,9 @@ export default function NoteCard() {
     return saved ? JSON.parse(saved) : [];
   });
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingIndex, setEditingIndex] = useState(null);
-  const [editingValue, setEditingValue] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [editingIndex, setEditingIndex] = useState<number | null>(null);
+  const [editingValue, setEditingValue] = useState<string>("");
 
   useEffect(() => {
     const savedTodos = localStorage.getItem("todos");
@@ -23,13 +23,13 @@ export default function NoteCard() {
     localStorage.setItem("todos", JSON.stringify(todos));
   }, [todos]);
 
-  const handleDeleteTodo = (index) => {
+  const handleDeleteTodo = (index: number) => {
     const updatedTodos = [...todos];
     updatedTodos.splice(index, 1);
     setTodos(updatedTodos);
   };
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNote(e.target.value);
   };
 
@@ -40,21 +40,23 @@ export default function NoteCard() {
     }
   };
 
-  const showModal = (index) => {
+  const showModal = (index: number) => {
     setEditingIndex(index);
     setEditingValue(todos[index]);
     setIsModalOpen(true);
   };
 
-  const handleModalInputChange = (e) => {
+  const handleModalInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEditingValue(e.target.value);
   };
 
   const handleOk = () => {
-    const updatedTodos = [...todos];
-    updatedTodos[editingIndex] = editingValue;
-    setTodos(updatedTodos);
-    setIsModalOpen(false);
+    if (editingIndex !== null) {
+      const updatedTodos = [...todos];
+      updatedTodos[editingIndex] = editingValue;
+      setTodos(updatedTodos);
+      setIsModalOpen(false);
+    }
   };
 
   const handleCancel = () => {
@@ -84,7 +86,7 @@ export default function NoteCard() {
       <div className="shadow-md mt-3 bg-white rounded-lg p-4">
         <h2 className="text-xl font-bold">Notes</h2>
         <ul>
-          {todos.map((todo, index) => (
+          {todos.map((todo: string, index: number) => (
             <li
               key={index}
               className="text-gray-700  flex items-center justify-between border-t border-gray-300 p-2"
